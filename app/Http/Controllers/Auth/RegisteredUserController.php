@@ -47,6 +47,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'jobseeker', // Set default role for regular users
         ]);
 
         event(new Registered($user));
@@ -81,8 +82,13 @@ class RegisteredUserController extends Controller
         return $this->redirectByRole('employer');
     }
 
-    private function redirectByRole(string $role): RedirectResponse
+    private function redirectByRole(?string $role): RedirectResponse
     {
+        // Handle null or empty role by defaulting to jobseeker
+        if (empty($role)) {
+            $role = 'jobseeker';
+        }
+
         if ($role === 'admin') {
             return redirect(route('admin.dashboard', absolute: false));
         }
@@ -91,6 +97,7 @@ class RegisteredUserController extends Controller
             return redirect(route('employer.dashboard', absolute: false));
         }
 
+        // Default redirect for jobseeker, user, or any other role
         return redirect(route('home', absolute: false));
     }
 }
