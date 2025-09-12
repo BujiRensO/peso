@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('scholarship_id')->nullable()->constrained('scholarships')->nullOnDelete();
             $table->string('status')->default('pending');
             $table->timestamp('applied_at')->useCurrent();
+            $table->timestamps();
         });
     }
 

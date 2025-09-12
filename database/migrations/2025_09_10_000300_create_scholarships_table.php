@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('provider');
             $table->date('deadline')->nullable();
+            $table->timestamps();
         });
     }
 

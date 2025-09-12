@@ -11,12 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('job_listings', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->string('employer');
-            $table->timestamp('posted_at')->useCurrent();
+        Schema::table('scholarships', function (Blueprint $table) {
             $table->timestamps();
         });
     }
@@ -26,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_listings');
+        Schema::table('scholarships', function (Blueprint $table) {
+            $table->dropTimestamps();
+        });
     }
 };
-
-

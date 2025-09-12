@@ -37,9 +37,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
 // Super Admin routes
 Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
-    Route::get('/superadmin/dashboard', function () {
-        return view('superadmin.dashboard');
-    })->name('superadmin.dashboard');
+    Route::get('/superadmin/dashboard', [App\Http\Controllers\SuperAdminController::class, 'dashboard'])->name('superadmin.dashboard');
+    Route::get('/superadmin/users', [App\Http\Controllers\SuperAdminController::class, 'userManagement'])->name('superadmin.users');
+    Route::patch('/superadmin/users/{user}/role', [App\Http\Controllers\SuperAdminController::class, 'updateUserRole'])->name('superadmin.users.role');
+    Route::get('/superadmin/logs', [App\Http\Controllers\SuperAdminController::class, 'systemLogs'])->name('superadmin.logs');
+    Route::get('/superadmin/analytics', [App\Http\Controllers\SuperAdminController::class, 'analytics'])->name('superadmin.analytics');
+    Route::post('/superadmin/reports', [App\Http\Controllers\SuperAdminController::class, 'generateReport'])->name('superadmin.reports.generate');
 });
 
 Route::middleware('auth')->group(function () {
