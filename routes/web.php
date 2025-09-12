@@ -1,11 +1,17 @@
 <?php
 
+use App\Http\Controllers\Auth\SupabaseOAuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Supabase OAuth routes
+Route::get('/login/google', [SupabaseOAuthController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/auth/callback', [SupabaseOAuthController::class, 'handleCallback'])->name('auth.callback');
+Route::post('/logout/supabase', [SupabaseOAuthController::class, 'logout'])->name('logout.supabase');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -27,6 +33,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+});
+
+// Super Admin routes
+Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
+    Route::get('/superadmin/dashboard', function () {
+        return view('superadmin.dashboard');
+    })->name('superadmin.dashboard');
 });
 
 Route::middleware('auth')->group(function () {
