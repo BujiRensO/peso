@@ -30,9 +30,30 @@ Route::middleware(['auth', 'verified', 'role:employer'])->group(function () {
 
 // Admin routes
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
+    
+    // Jobs management
+    Route::get('/admin/jobs', [App\Http\Controllers\AdminController::class, 'jobs'])->name('admin.jobs');
+    Route::get('/admin/jobs/{job}', [App\Http\Controllers\AdminController::class, 'showJob'])->name('admin.jobs.show');
+    Route::patch('/admin/jobs/{job}/status', [App\Http\Controllers\AdminController::class, 'updateJobStatus'])->name('admin.jobs.status');
+    Route::delete('/admin/jobs/{job}', [App\Http\Controllers\AdminController::class, 'deleteJob'])->name('admin.jobs.delete');
+    
+    // Scholarships management
+    Route::get('/admin/scholarships', [App\Http\Controllers\AdminController::class, 'scholarships'])->name('admin.scholarships');
+    Route::get('/admin/scholarships/{scholarship}', [App\Http\Controllers\AdminController::class, 'showScholarship'])->name('admin.scholarships.show');
+    Route::patch('/admin/scholarships/{scholarship}/status', [App\Http\Controllers\AdminController::class, 'updateScholarshipStatus'])->name('admin.scholarships.status');
+    Route::delete('/admin/scholarships/{scholarship}', [App\Http\Controllers\AdminController::class, 'deleteScholarship'])->name('admin.scholarships.delete');
+    
+    // Users management
+    Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'users'])->name('admin.users');
+    Route::get('/admin/users/{user}', [App\Http\Controllers\AdminController::class, 'showUser'])->name('admin.users.show');
+    Route::patch('/admin/users/{user}/role', [App\Http\Controllers\AdminController::class, 'updateUserRole'])->name('admin.users.role');
+    Route::patch('/admin/users/{user}/status', [App\Http\Controllers\AdminController::class, 'toggleUserStatus'])->name('admin.users.status');
+    
+    // Applications management
+    Route::get('/admin/applications', [App\Http\Controllers\AdminController::class, 'applications'])->name('admin.applications');
+    Route::get('/admin/applications/{application}', [App\Http\Controllers\AdminController::class, 'showApplication'])->name('admin.applications.show');
+    Route::patch('/admin/applications/{application}/status', [App\Http\Controllers\AdminController::class, 'updateApplicationStatus'])->name('admin.applications.status');
 });
 
 // Super Admin routes
